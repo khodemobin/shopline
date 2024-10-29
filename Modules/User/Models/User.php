@@ -4,6 +4,7 @@ namespace Modules\User\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -13,6 +14,7 @@ use Modules\Article\Models\Article;
 use Modules\Auth\Notifications\ResetPasswordRequestNotification;
 use Modules\Auth\Notifications\VerifyMailNotification;
 use Modules\Category\Models\Category;
+use Modules\Media\Models\Media;
 use Modules\Slider\Models\Slider;
 use Modules\User\Database\Factories\UserFactory;
 use Modules\User\Enums\UserTypeEnum;
@@ -30,7 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var string[]
      */
-    protected $fillable = ['name', 'email', 'phone', 'type', 'password'];
+    protected $fillable = ['name', 'email', 'phone', 'type', 'password', 'avatar_id'];
 
     /**
      * Set column to hidden for columns.
@@ -116,20 +118,18 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get image avatar.
-     *
-     * @return string
+     * Get the user avatar.
      */
-    public function getAvatar()
+    public function getAvatar(): string
     {
-        return '';
+        return $this->avatar ? $this->avatar->media : asset(config('app.logo'));
     }
 
     // Relations
     /**
      * Relations to Category model, relation is one to many.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function categories()
     {
@@ -139,7 +139,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Relations to Product model, relation is one to many.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function products()
     {
@@ -149,7 +149,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Relations to Article model, relation is one to many.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function articles()
     {
@@ -184,5 +184,13 @@ class User extends Authenticatable implements MustVerifyEmail
     public function address()
     {
         return $this->hasMany(UserAdress::class);
+    }
+
+    /**
+     * Relation to Media model, relation is one-to-many.
+     */
+    public function avatar(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'avatar_id');
     }
 }
