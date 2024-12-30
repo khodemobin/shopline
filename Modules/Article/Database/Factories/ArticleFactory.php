@@ -5,6 +5,7 @@ namespace Modules\Article\Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Article\Enums\ArticleStatusEnum;
 use Modules\Article\Models\Article;
+use Modules\Media\Models\Media;
 use Modules\Share\Services\ShareService;
 use Modules\User\Models\User;
 
@@ -19,11 +20,12 @@ class ArticleFactory extends Factory
      *
      * @throws \Exception
      */
-    public function definition()
+    public function definition(): array
     {
         $title = $this->faker->title;
 
         return [
+            'media_id' => Media::factory()->create()->id,
             'user_id' => User::factory()->create()->id,
             'title' => $title,
             'slug' => ShareService::makeSlug($title),

@@ -3,6 +3,7 @@
 namespace Modules\Product\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Media\Models\Media;
 use Modules\Product\Enums\ProductStatusEnum;
 use Modules\Product\Models\Product;
 use Modules\Share\Services\ShareService;
@@ -19,12 +20,12 @@ class ProductFactory extends Factory
      *
      * @throws \Exception
      */
-    public function definition()
+    public function definition(): array
     {
         $title = $this->faker->title;
 
         return [
-            'first_media_id' => null,
+            'first_media_id' => Media::factory()->create()->id,
             'vendor_id' => User::factory()->create()->id,
             'title' => $title,
             'slug' => ShareService::makeSlug($title),

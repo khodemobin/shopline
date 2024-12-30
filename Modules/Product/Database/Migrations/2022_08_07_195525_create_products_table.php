@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('vendor_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('first_media_id')->nullable()->constrained('medias')->nullOnDelete();
-            $table->string('title')->unique();
+            $table->string('title');
             $table->string('slug')->unique();
             $table->string('sku')->unique();
             $table->string('price');

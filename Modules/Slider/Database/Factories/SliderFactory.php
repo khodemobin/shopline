@@ -3,6 +3,7 @@
 namespace Modules\Slider\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Media\Models\Media;
 use Modules\Slider\Enums\SliderStatusEnum;
 use Modules\Slider\Models\Slider;
 use Modules\User\Models\User;
@@ -23,7 +24,7 @@ class SliderFactory extends Factory
     {
         return [
             'user_id' => User::query()->inRandomOrder()->first()->id,
-            'media_id' => null,
+            'media_id' => Media::factory()->create()->id,
             'link' => $this->faker->title,
             'status' => SliderStatusEnum::STATUS_ACTIVE->value,
         ];

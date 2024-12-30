@@ -22,5 +22,7 @@ class DatabaseSeeder extends Seeder
         foreach (config('shareConfig.factories', []) as $key) {
             $key['model']::factory($key['count'])->create();
         }
+
+        updateDatabaseTableSequence();
     }
 }
